@@ -24,6 +24,8 @@ jobs:
         run: python -m build
       - name: Installed wheel
         shell: bash
+        env:
+          SMART_MONEY_SOURCES_FILE: ${{ github.workspace }}/external_sources.json
         run: |
           package_check=$(mktemp -d)
           trap 'rm -rf "$package_check"' EXIT
