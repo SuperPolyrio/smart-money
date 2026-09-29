@@ -1,0 +1,18 @@
+[Unit]
+Description=Smart Money dynamic wallet watchlist
+After=network-online.target polydata-vps-http-proxy.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/develop/polymarket/repos/smart-money
+Environment=SMART_MONEY_ENV_FILE=%h/develop/polymarket/repos/smart-money/.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=%h/.conda/envs/smart-money/bin/smart-money watchlist --watch --output var/wallet_acceptance.json
+Restart=always
+RestartSec=15
+KillSignal=SIGINT
+TimeoutStopSec=90
+UMask=0077
+
+[Install]
+WantedBy=default.target

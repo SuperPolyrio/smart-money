@@ -1,0 +1,77 @@
+/* Smart Money homepage visual starting points, not a complete stylesheet.
+   Merge into the existing token layer. No font files are bundled. */
+:root {
+  color-scheme: dark;
+  --sm-bg: #080b0d;
+  --sm-surface-soft: #0d1114;
+  --sm-surface: #11161b;
+  --sm-text: #f5f7f8;
+  --sm-text-secondary: #adb7c1;
+  --sm-text-muted: #83909c;
+  --sm-border: rgba(220, 230, 238, 0.09);
+  --sm-border-hover: rgba(220, 230, 238, 0.18);
+  --sm-positive: #74e8a4;
+  --sm-warning: #d8b879;
+  --sm-negative: #ef9292;
+  --sm-button-bg: #f5f7f8;
+  --sm-button-text: #0a0d10;
+  --sm-font: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  --sm-font-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+  --sm-page-max: 1376px;
+  --sm-page-gutter: clamp(20px, 5.2vw, 80px);
+  --sm-header-height: 88px;
+  --sm-radius-card: 18px;
+  --sm-radius-button: 16px;
+  --sm-radius-small: 10px;
+  --sm-radius-pill: 999px;
+  --sm-space-1: 4px;
+  --sm-space-2: 8px;
+  --sm-space-3: 12px;
+  --sm-space-4: 16px;
+  --sm-space-6: 24px;
+  --sm-space-8: 32px;
+  --sm-space-12: 48px;
+  --sm-shadow-overlay: 0 16px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  --sm-ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --sm-ease-interaction: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --sm-duration-fast: 180ms;
+  --sm-duration-panel: 240ms;
+  --sm-duration-enter: 650ms;
+}
+
+.sm-container {
+  width: min(calc(100% - 2 * var(--sm-page-gutter)), var(--sm-page-max));
+  margin-inline: auto;
+}
+.sm-display {
+  margin: 0;
+  font-family: var(--sm-font);
+  font-size: clamp(44px, 6vw, 92px);
+  font-weight: 750;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  color: var(--sm-text);
+}
+.sm-numeric { font-variant-numeric: tabular-nums; }
+.sm-surface {
+  background: var(--sm-surface-soft);
+  border: 1px solid var(--sm-border);
+  border-radius: var(--sm-radius-card);
+}
+.sm-interactive:focus-visible {
+  outline: 2px solid var(--sm-text);
+  outline-offset: 4px;
+}
+@media (max-width: 767px) {
+  :root { --sm-page-gutter: 20px; --sm-header-height: 72px; }
+  .sm-display { font-size: clamp(44px, 12vw, 56px); letter-spacing: -0.045em; }
+}
+/* CSS is only one part of reduced-motion support. Stop WebGL explicitly too.
+   Scope to homepage motion classes, not all application animations. */
+@media (prefers-reduced-motion: reduce) {
+  .sm-entrance, .sm-continuous, .sm-interactive {
+    animation: none !important;
+    transition: none !important;
+  }
+  .sm-entrance { opacity: 1 !important; transform: none !important; }
+}

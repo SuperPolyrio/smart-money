@@ -1,0 +1,353 @@
+[
+  {
+    "id": "coinbase_exchange",
+    "name": "Coinbase Exchange 行情",
+    "enabled": false,
+    "market_types": [
+      "crypto_price"
+    ],
+    "regions": [
+      "GLOBAL"
+    ],
+    "entities": [],
+    "role": "data_provider",
+    "provides": [
+      "market_price",
+      "candles",
+      "trade_history"
+    ],
+    "domains": [
+      "api.exchange.coinbase.com",
+      "docs.cdp.coinbase.com"
+    ],
+    "entry_urls": [
+      "https://api.exchange.coinbase.com/"
+    ],
+    "access": {
+      "mode": "adapter",
+      "adapter": "coinbase_market_data",
+      "docs_url": "https://docs.cdp.coinbase.com/api-reference/exchange-api/rest-api/products/get-product-candles"
+    },
+    "notes": "按规则绑定交易对、时区、数据类型与窗口；历史蜡烛可能缺失，不能用另一交易所替代。"
+  },
+  {
+    "id": "binance_spot",
+    "name": "Binance 现货行情",
+    "enabled": false,
+    "market_types": [
+      "crypto_price"
+    ],
+    "regions": [
+      "GLOBAL"
+    ],
+    "entities": [],
+    "role": "data_provider",
+    "provides": [
+      "market_price",
+      "candles",
+      "trade_history"
+    ],
+    "domains": [
+      "api.binance.com",
+      "developers.binance.com"
+    ],
+    "entry_urls": [
+      "https://api.binance.com/"
+    ],
+    "access": {
+      "mode": "adapter",
+      "adapter": "binance_market_data",
+      "docs_url": "https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market"
+    },
+    "notes": "确认现货或其他产品、交易对、窗口和地区访问限制；不承诺无限历史。"
+  },
+  {
+    "id": "chainlink_feeds",
+    "name": "Chainlink Data Feeds",
+    "enabled": false,
+    "market_types": [
+      "crypto_price"
+    ],
+    "regions": [
+      "GLOBAL"
+    ],
+    "entities": [],
+    "role": "data_provider",
+    "provides": [
+      "oracle_feed_value"
+    ],
+    "domains": [
+      "docs.chain.link",
+      "data.chain.link"
+    ],
+    "entry_urls": [
+      "https://docs.chain.link/data-feeds"
+    ],
+    "access": {
+      "mode": "adapter",
+      "adapter": "chainlink_data_feeds",
+      "docs_url": "https://docs.chain.link/data-feeds"
+    },
+    "notes": "入口为产品文档，不是价格响应；实际读取须绑定已核验网络、feed 合约及轮次。不能替代 Data Streams。"
+  },
+  {
+    "id": "chainlink_streams",
+    "name": "Chainlink Data Streams",
+    "enabled": false,
+    "market_types": [
+      "crypto_price"
+    ],
+    "regions": [
+      "GLOBAL"
+    ],
+    "entities": [],
+    "role": "data_provider",
+    "provides": [
+      "oracle_stream_report"
+    ],
+    "domains": [
+      "docs.chain.link",
+      "data.chain.link"
+    ],
+    "entry_urls": [
+      "https://docs.chain.link/data-streams"
+    ],
+    "access": {
+      "mode": "adapter",
+      "adapter": "chainlink_data_streams",
+      "docs_url": "https://docs.chain.link/data-streams"
+    },
+    "notes": "入口为产品文档；接口主机、feed ID、报告时间、权限与解码由已注册适配器核验。Data Feeds 与 Streams 不互换。"
+  },
+  {
+    "id": "ethereum_blog",
+    "name": "Ethereum Foundation Blog",
+    "enabled": false,
+    "market_types": [
+      "crypto_project"
+    ],
+    "regions": [
+      "GLOBAL"
+    ],
+    "entities": [
+      "ethereum"
+    ],
+    "role": "issuer",
+    "provides": [
+      "project_announcement",
+      "protocol_upgrade"
+    ],
+    "domains": [
+      "blog.ethereum.org"
+    ],
+    "entry_urls": [
+      "https://blog.ethereum.org/"
+    ],
+    "access": {
+      "mode": "web",
+      "adapter": null,
+      "docs_url": null,
+      "render": "http"
+    },
+    "notes": "仅适用于 Ethereum 相关声明；计划升级与实际链上生效分开。",
+    "discovery": [
+      {
+        "kind": "listing",
+        "url": "https://blog.ethereum.org/"
+      }
+    ]
+  },
+  {
+    "id": "defillama",
+    "name": "DefiLlama 协议数据",
+    "enabled": false,
+    "market_types": [
+      "crypto_protocol",
+      "crypto_project"
+    ],
+    "regions": [
+      "GLOBAL"
+    ],
+    "entities": [],
+    "role": "data_provider",
+    "provides": [
+      "protocol_tvl",
+      "protocol_revenue",
+      "protocol_volume"
+    ],
+    "domains": [
+      "defillama.com",
+      "api.llama.fi",
+      "api-docs.defillama.com"
+    ],
+    "entry_urls": [
+      "https://defillama.com/"
+    ],
+    "access": {
+      "mode": "adapter",
+      "adapter": "defillama_data",
+      "docs_url": "https://api-docs.defillama.com/"
+    },
+    "notes": "不同数据产品的权限、接口及定义分别核验；TVL、收入和交易量不能混用，不替代项目正式公告。"
+  },
+  {
+    "id": "fed_fomc",
+    "name": "美联储 FOMC",
+    "enabled": false,
+    "market_types": [
+      "macro_rates"
+    ],
+    "regions": [
+      "US"
+    ],
+    "entities": [
+      "federal_reserve"
+    ],
+    "role": "official_record",
+    "provides": [
+      "rate_decision",
+      "meeting_calendar",
+      "policy_statement",
+      "meeting_minutes"
+    ],
+    "domains": [
+      "www.federalreserve.gov",
+      "federalreserve.gov"
+    ],
+    "entry_urls": [
+      "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+    ],
+    "access": {
+      "mode": "web",
+      "adapter": null,
+      "docs_url": null,
+      "render": "http"
+    },
+    "notes": "按具体会议查声明；预告、声明、纪要分别标注时间，不提供其他央行的正式决定。",
+    "discovery": [
+      {
+        "kind": "feed",
+        "url": "https://www.federalreserve.gov/feeds/press_monetary.xml"
+      },
+      {
+        "kind": "listing",
+        "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+      }
+    ]
+  },
+  {
+    "id": "marquette_poll",
+    "name": "Marquette Law School Poll",
+    "enabled": false,
+    "market_types": [
+      "election",
+      "public_opinion"
+    ],
+    "regions": [
+      "US-WI",
+      "US"
+    ],
+    "entities": [],
+    "role": "original_research",
+    "provides": [
+      "poll_results",
+      "poll_methodology",
+      "poll_release_schedule"
+    ],
+    "domains": [
+      "law.marquette.edu"
+    ],
+    "entry_urls": [
+      "https://law.marquette.edu/poll/"
+    ],
+    "access": {
+      "mode": "web",
+      "adapter": null,
+      "docs_url": null
+    },
+    "notes": "每份报告重核地区、人群、调查日期与问题；全国调查不能替代州级测量，发布预告不等于已有结果。"
+  },
+  {
+    "id": "cbf_national_teams",
+    "name": "CBF 巴西国家队官方资料",
+    "enabled": false,
+    "market_types": [
+      "sports_football"
+    ],
+    "regions": [
+      "BR",
+      "GLOBAL"
+    ],
+    "entities": [
+      "brazil_national_teams"
+    ],
+    "role": "official_record",
+    "provides": [
+      "squad_announcement",
+      "team_statement",
+      "injury_update",
+      "match_report"
+    ],
+    "domains": [
+      "www.cbf.com.br",
+      "cbf.com.br"
+    ],
+    "entry_urls": [
+      "https://www.cbf.com.br/selecao-brasileira/noticias"
+    ],
+    "discovery": [
+      {
+        "kind": "listing",
+        "url": "https://www.cbf.com.br/selecao-brasileira/noticias"
+      }
+    ],
+    "access": {
+      "mode": "web",
+      "adapter": null,
+      "docs_url": null,
+      "render": "http"
+    },
+    "notes": "新增候选来源，非已启用能力。必须核对男/女足、年龄组、对手、赛事及日期；集训名单不是正式首发。公开栏目本轮出现正文有限或访问失败，不能宣称 http 自动发现已通过。已知文章直取与栏目发现须分别验收；浏览器仅在安全出口和权限验收后显式启用。"
+  },
+  {
+    "id": "ge_brazil_football",
+    "name": "ge 巴西国家队报道",
+    "enabled": false,
+    "market_types": [
+      "sports_football"
+    ],
+    "regions": [
+      "BR",
+      "GLOBAL"
+    ],
+    "entities": [
+      "brazil_national_teams"
+    ],
+    "role": "newsroom",
+    "provides": [
+      "match_preview",
+      "reported_statement",
+      "injury_report",
+      "match_report"
+    ],
+    "domains": [
+      "ge.globo.com"
+    ],
+    "entry_urls": [
+      "https://ge.globo.com/futebol/selecao-brasileira/"
+    ],
+    "discovery": [
+      {
+        "kind": "listing",
+        "url": "https://ge.globo.com/futebol/selecao-brasileira/"
+      }
+    ],
+    "access": {
+      "mode": "web",
+      "adapter": null,
+      "docs_url": null,
+      "render": "http"
+    },
+    "notes": "新增候选来源。保留葡萄牙语原文及署名；预计阵容、报道转述和正式首发分别表达。署名观点不升级为事实；报道引用同一 CBF 公告时不计作额外独立确认。栏目入口被检索工具读取不证明项目直连或许可验收已完成。"
+  }
+]

@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "polymarket-smart-money"
+version = "0.1.0"
+description = "Evidence-based smart-money wallet and trade analysis"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "ijson>=3.4,<4",
+  "paramiko>=3,<5",
+  "pydantic>=2.10,<3",
+  "python-dotenv>=1.0,<2",
+  "pycurl>=7.45.4,<8",
+  "trafilatura>=2,<3",
+  "lxml>=5,<7",
+  "requests>=2.32,<3",
+  "zstandard>=0.23,<1",
+]
+
+[project.scripts]
+smart-money = "smart_money.cli:main"
+
+[project.optional-dependencies]
+monitor = ["polymarket-data-engine>=0.1.0"]
+dev = [
+  "types-paramiko>=3,<5",
+  "build>=1,<2",
+  "mypy>=1.13,<3",
+  "pytest>=8.3,<9",
+  "ruff>=0.8,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["smart_money*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib", "--strict-config", "--strict-markers"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["UP017"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src/smart_money"]
+check_untyped_defs = true
+disallow_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+no_implicit_optional = true

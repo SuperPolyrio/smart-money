@@ -1,0 +1,24 @@
+[Unit]
+Description=Smart Money local Qwen3.8-27B (on demand)
+
+[Service]
+Type=exec
+Environment=PYTHONNOUSERSITE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=CUDA_VISIBLE_DEVICES=4,5
+Environment=CUDA_HOME=/usr/local/cuda-12.9
+Environment=PATH=/data/LLMzoo/runtime/sglang-qwen-cu130/bin:/usr/local/cuda-12.9/bin:/usr/bin:/bin
+Environment=LD_LIBRARY_PATH=/data/LLMzoo/runtime/sglang-qwen-cu130/lib/python3.10/site-packages/nvidia/cu13/lib
+ExecStartPre=/usr/bin/python3 -c 'import os, subprocess, sys; free = [int(v) for v in subprocess.check_output(["/usr/bin/nvidia-smi", "--id=" + os.environ["CUDA_VISIBLE_DEVICES"], "--query-gpu=memory.free", "--format=csv,noheader,nounits"], text=True).split()]; sys.exit(0 if len(free) == 2 and min(free) >= 30000 else "Qwen startup needs 30000 MiB free per configured GPU; available MiB: " + str(free))'
+ExecStart=/data/LLMzoo/runtime/sglang-qwen-cu130/bin/python -m sglang.launch_server \
+    --model-path /data/LLMzoo/Qwen3.8-27B --served-model-name Qwen3.8-27B \
+    --host 127.0.0.1 --port 30000 --tp-size 2 --context-length 32768 \
+    --mem-fraction-static 0.92 --max-total-tokens 32768 \
+    --max-running-requests 1 --chunked-prefill-size 512 \
+    --max-mamba-cache-size 4 \
+    --attention-backend triton --sampling-backend pytorch \
+    --reasoning-parser qwen3 --tool-call-parser qwen3_coder \
+    --enable-cache-report --disable-cuda-graph
+KillSignal=SIGINT
+TimeoutStopSec=60
+UMask=0077

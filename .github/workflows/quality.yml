@@ -1,0 +1,42 @@
+name: quality
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONNOUSERSITE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install package and check tools
+        run: python -m pip install -e '.[dev]'
+      - name: Tests
+        run: make test PYTHON=python
+      - name: Ruff
+        run: make lint format-check
+      - name: Distribution
+        run: python -m build
+      - name: Installed wheel
+        shell: bash
+        run: |
+          package_check=$(mktemp -d)
+          trap 'rm -rf "$package_check"' EXIT
+          python -m venv "$package_check/env"
+          check_python="$package_check/env/bin/python"
+          for wheel in "$GITHUB_WORKSPACE"/dist/*.whl; do
+            "$check_python" -m pip install "$wheel" 'pytest>=8.3,<9'
+          done
+          cd "$package_check"
+          "$package_check/env/bin/smart-money" analyze --help
+          "$package_check/env/bin/smart-money" watchlist --help
+          "$check_python" -m pytest -q --import-mode=importlib -c /dev/null -p no:cacheprovider \
+            --basetemp "$package_check/pytest" "$GITHUB_WORKSPACE/tests/research/test_mas.py" \
+            "$GITHUB_WORKSPACE/tests/markets/test_watchlist.py"
+      - name: Type check
+        run: make typecheck
